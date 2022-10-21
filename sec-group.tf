@@ -6,17 +6,17 @@ resource "aws_security_group" "lb" {
 
   ingress {
     protocol    = "tcp"
-    from_port   = 80
-    to_port     = 80
-    cidr_blocks = ["0.0.0.0/0"]
+    from_port   = var.http_port
+    to_port     = var.http_port
+    cidr_blocks = [var.open_cidr]
   }
 
 
   egress {
     from_port   = 0
     to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
+    protocol    = var.protocol
+    cidr_blocks = [var.open_cidr]
   }
 
   tags = {
@@ -33,15 +33,15 @@ resource "aws_security_group" "ecs_sg" {
 
   ingress {
     protocol        = "tcp"
-    from_port       = 80
-    to_port         = 80
+    from_port       = var.http_port
+    to_port         = var.http_port
     security_groups = [aws_security_group.lb.id]
   }
 
   egress {
-    protocol    = "-1"
+    protocol    = var.protocol
     from_port   = 0
     to_port     = 0
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = [var.open_cidr]
   }
 }

@@ -6,7 +6,7 @@ resource "aws_lb" "default" {
 
 resource "aws_lb_target_group" "timitech" {
   name        = "example-target-group"
-  port        = 80
+  port        = var.http_port
   protocol    = "HTTP"
   vpc_id      = aws_vpc.default.id
   target_type = "ip"

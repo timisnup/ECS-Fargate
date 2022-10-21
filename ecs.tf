@@ -11,26 +11,26 @@ resource "aws_ecs_task_definition" "timitech" {
   network_mode             = "awsvpc"
   execution_role_arn       = aws_iam_role.ecs_tasks_execution_role.arn
   requires_compatibilities = ["FARGATE"]
-  cpu                      = 1024
-  memory                   = 2048
+  cpu                      = var.cpu
+  memory                   = var.memory
 
   container_definitions = jsonencode([
     {
       name      = "timmietech"
-      image     = "INSERT-YOUR-ECR-URL-HERE"
+      image     = "ENTER-ECR-URL-HERE"
       essential = true
 
       portMappings = [
         {
-          containerPort = 80
-          hostPort      = 80
+          containerPort = var.http_port
+          hostPort      = var.http_port
         }
       ]
       logConfiguration = {
         logDriver = "awslogs",
         options = {
           "awslogs-group"         = aws_cloudwatch_log_group.log.name
-          "awslogs-region"        = "eu-west-2"
+          "awslogs-region"        = var.region
           "awslogs-stream-prefix" = "timmietech"
         }
       }
@@ -57,7 +57,7 @@ resource "aws_ecs_service" "test-service" {
   load_balancer {
     target_group_arn = aws_lb_target_group.timitech.id
     container_name   = "timmietech"
-    container_port   = 80
+    container_port   = var.http_port
   }
 
   depends_on = [aws_lb_listener.timitech]

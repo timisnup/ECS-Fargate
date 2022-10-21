@@ -1,6 +1,6 @@
 # generates an iam policy document in json format for the ecs task execution role
 data "aws_iam_policy_document" "ecs_tasks_execution_role" {
-  version = "2012-10-17"
+  version = var.vers
   statement {
     sid     = ""
     effect  = "Allow"

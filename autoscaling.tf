@@ -1,6 +1,6 @@
 resource "aws_appautoscaling_target" "ecs_target" {
-  max_capacity       = 2
-  min_capacity       = 1
+  max_capacity       = var.max_capacity
+  min_capacity       = var.app_count
   resource_id        = "service/${aws_ecs_cluster.main.name}/${aws_ecs_service.test-service.name}"
   scalable_dimension = "ecs:service:DesiredCount"
   service_namespace  = "ecs"
@@ -16,7 +16,7 @@ resource "aws_appautoscaling_policy" "ecs_policy_up" {
 
   step_scaling_policy_configuration {
     adjustment_type         = "ChangeInCapacity"
-    cooldown                = 60
+    cooldown                = var.cooldown
     metric_aggregation_type = "Maximum"
 
     step_adjustment {
