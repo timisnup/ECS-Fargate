@@ -17,7 +17,7 @@ resource "aws_ecs_task_definition" "timitech" {
   container_definitions = jsonencode([
     {
       name      = "timmietech"
-      image     = "ENTER-ECR-URL-HERE"
+      image     = "204708917400.dkr.ecr.eu-west-2.amazonaws.com/timmietech:latest"
       essential = true
 
       portMappings = [
